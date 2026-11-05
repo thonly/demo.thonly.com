@@ -1,0 +1,16 @@
+{
+    "version": "1.7.1",
+    "files": {
+        "css/metta.css": "9bfe986c46c303bf9a48be85322d68e3d626571a424ef3a8aa81faaf5c866692",
+        "css/motion.css": "9bfbe39c0de6a9dfaf9fdc2c61e327b3c8e70221c34dff9befd85da448b9e0c2",
+        "css/reduce-global.css": "c2c67276156e8e6803700bbb29d5acad44c9e91c7976d55f7a7e8727294da1f3",
+        "css/theme-2state.css": "d579bb887008917fb5586e539182595f851e6a6fc62582a213786aee9550bb06",
+        "css/theme-3block.css": "18b99631e9bec0ea53cf3ecbd4f534f3314965f2493909da7bf544b814ddcb0a",
+        "css/tokens.css": "b0072fc2fa652ad01521d0e5ba3bbd75f47a8161f10395e3d674db3f5d87deb8",
+        "emblem/emblem.path.txt": "8377c7bc7f9ab629058b6ee1d9ec058eedb5f473328bf5017bba056f214c2707",
+        "emblem/emblem.svg": "368f520ad2d2f9db50d83ca9cd7aee9475948dc8e38c61b7afa13f7717fef903",
+        "emblem/emblem.ts": "6e150389eed576c392ff6231c0b38b8fea5d4c11f7a5b21936bb25afab069890",
+        "qr/bqr-card.ts": "55b4cf3d742bb758f789fd18f91737e8da1169610b6b953ad71e95d8bb713168",
+        "qr/bqr.ts": "af1b66b7cffc1683a48f85c9ad4417acfbbedfbaa61e775672399e7c8c0a04d3"
+    }
+}

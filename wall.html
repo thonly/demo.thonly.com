@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="site.webmanifest">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="googlebot" content="noindex,nofollow">
+<meta name="bingbot" content="noindex,nofollow">
+<meta name="slurp" content="noindex,nofollow">
+<meta name="yandex" content="noindex,nofollow">
+<title>billing.thonly.com: the wall</title>
+<meta name="theme-color" content="#0369a1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#fcfbfe; --surface:#f4f1fb; --surface-2:#ebe7f5;
+    --line:rgba(20,16,30,0.12); --line-strong:rgba(20,16,30,0.28);
+    --ink:#16141c; --ink-dim:#5b5766; --ink-faint:#8b8796;
+    --accent:#0369a1; --accent-soft:#075985; --accent-ink:#fff;
+    --accent-wash:rgba(16,100,48,.10); --accent-edge:rgba(16,100,48,.25);
+    --font-display:"Newsreader",Georgia,serif;
+    --font-text:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0a0a0f; --surface:#17171d; --surface-2:#1f1f27;
+    --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.18);
+    --ink:#f5f5f7; --ink-dim:#9b9ba5; --ink-faint:#6b6b76;
+    --accent:#7cc4ec; --accent-soft:#bae6fd; --accent-ink:#0a0a0f;
+    --accent-wash:rgba(63,165,100,.14); --accent-edge:rgba(63,165,100,.32);
+  }}
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--surface-2);
+       color:var(--ink);font-family:var(--font-text)}
+  header{position:fixed;inset:0 0 auto 0;z-index:5;display:flex;align-items:center;gap:14px;
+       flex-wrap:wrap;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--line)}
+  .home{font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:inherit;text-decoration:none}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .tab{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;
+       border:1px solid var(--line-strong);background:transparent;color:var(--ink-dim);
+       border-radius:999px;padding:6px 12px;cursor:pointer;min-height:32px}
+  .tab[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent-edge);color:var(--accent-soft)}
+  .tab .n{opacity:.55;margin-left:3px}
+  .zoom{margin-left:auto;display:flex;gap:6px;align-items:center}
+  .zoom button{width:36px;height:36px;border-radius:10px;border:1px solid var(--line-strong);
+       background:transparent;color:var(--ink);font-size:1rem;cursor:pointer}
+  .zoom .fit{width:auto;padding:0 13px;font-family:var(--font-mono);font-size:.72rem}
+  #stage{position:fixed;inset:0;top:0;overflow:hidden;cursor:grab;touch-action:none}
+  #stage.drag{cursor:grabbing}
+  #world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+  /* NO overflow:hidden here — it clips the caption, which sits above the frame.
+     The iframe does its own corner clipping instead. */
+  .frame{position:absolute;display:block;text-decoration:none;color:inherit;
+       background:var(--bg);border:1px solid var(--line);border-radius:10px;
+       box-shadow:0 8px 28px rgba(20,16,30,.10)}
+  .frame .cap{position:absolute;left:0;top:-26px;font-family:var(--font-mono);font-size:12px;
+       letter-spacing:.03em;color:var(--ink-dim);white-space:nowrap}
+  .frame iframe{border:0;display:block;pointer-events:none;background:var(--bg);border-radius:9px}
+  .note{position:absolute;background:#fdf3c7;color:#3b3320;border-radius:8px;padding:12px 14px;
+       font-size:13px;line-height:1.5;box-shadow:0 6px 18px rgba(20,16,30,.14);white-space:pre-wrap}
+  .hint{position:fixed;left:14px;bottom:12px;z-index:5;font-family:var(--font-mono);font-size:.66rem;
+       letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);
+       background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+</style>
+<script src="./analytics.js?v=5d13acb0"></script>
+</head>
+<body>
+<header>
+  <a class="home" href="./">&#8592; Log in and Sign</a>
+  <div class="tabs"><button class="tab" data-page="billing">billing.thonly.com <span class="n">37</span></button><button class="tab" data-page="family">Family <span class="n">4</span></button><button class="tab" data-page="admin">The KHQR queue <span class="n">2</span></button><button class="tab" data-page="apps">Inside the apps <span class="n">6</span></button></div>
+  <div class="zoom">
+    <button class="fit" id="fit">Fit</button>
+    <button id="out" aria-label="Zoom out">&#8722;</button>
+    <button id="in" aria-label="Zoom in">+</button>
+  </div>
+</header>
+<div id="stage"><div id="world"><div class="page" data-page="billing" hidden><a class="frame" href="B13.html?v=43ba93d0" target="_blank" style="left:0px;top:0px;width:390px;height:844px"><span class="cap">B13 · Before you log in, English</span><iframe data-src="B13.html?v=43ba93d0" width="390" height="844" loading="lazy" title="B13 · Before you log in, English" scrolling="no"></iframe></a><a class="frame" href="B18.html?v=e3c3c330" target="_blank" style="left:470px;top:0px;width:390px;height:844px"><span class="cap">B18 · Your age, English</span><iframe data-src="B18.html?v=e3c3c330" width="390" height="844" loading="lazy" title="B18 · Your age, English" scrolling="no"></iframe></a><a class="frame" href="B1.html?v=309d8867" target="_blank" style="left:940px;top:0px;width:390px;height:844px"><span class="cap">B1 · Balance, English</span><iframe data-src="B1.html?v=309d8867" width="390" height="844" loading="lazy" title="B1 · Balance, English" scrolling="no"></iframe></a><a class="frame" href="B1Z.html?v=f23d4408" target="_blank" style="left:1410px;top:0px;width:390px;height:844px"><span class="cap">B1Z · Balance at zero, English</span><iframe data-src="B1Z.html?v=f23d4408" width="390" height="844" loading="lazy" title="B1Z · Balance at zero, English" scrolling="no"></iframe></a><a class="frame" href="B2.html?v=dd863ed4" target="_blank" style="left:1880px;top:0px;width:390px;height:844px"><span class="cap">B2 · Add money, English</span><iframe data-src="B2.html?v=dd863ed4" width="390" height="844" loading="lazy" title="B2 · Add money, English" scrolling="no"></iframe></a><a class="frame" href="B3.html?v=d62170dd" target="_blank" style="left:2350px;top:0px;width:390px;height:844px"><span class="cap">B3 · Added, English</span><iframe data-src="B3.html?v=d62170dd" width="390" height="844" loading="lazy" title="B3 · Added, English" scrolling="no"></iframe></a><a class="frame" href="B3X.html?v=ffdfd808" target="_blank" style="left:2820px;top:0px;width:390px;height:844px"><span class="cap">B3X · Declined, English</span><iframe data-src="B3X.html?v=ffdfd808" width="390" height="844" loading="lazy" title="B3X · Declined, English" scrolling="no"></iframe></a><a class="frame" href="B14.html?v=deab5b30" target="_blank" style="left:3290px;top:0px;width:390px;height:844px"><span class="cap">B14 · Pay with KHQR, English</span><iframe data-src="B14.html?v=deab5b30" width="390" height="844" loading="lazy" title="B14 · Pay with KHQR, English" scrolling="no"></iframe></a><a class="frame" href="B15.html?v=b32a4160" target="_blank" style="left:3760px;top:0px;width:390px;height:844px"><span class="cap">B15 · KHQR, waiting, English</span><iframe data-src="B15.html?v=b32a4160" width="390" height="844" loading="lazy" title="B15 · KHQR, waiting, English" scrolling="no"></iframe></a><a class="frame" href="B4.html?v=46a31056" target="_blank" style="left:4230px;top:0px;width:390px;height:844px"><span class="cap">B4 · History, English</span><iframe data-src="B4.html?v=46a31056" width="390" height="844" loading="lazy" title="B4 · History, English" scrolling="no"></iframe></a><a class="frame" href="B5.html?v=ece1a2b0" target="_blank" style="left:4700px;top:0px;width:390px;height:844px"><span class="cap">B5 · Receipt, English</span><iframe data-src="B5.html?v=ece1a2b0" width="390" height="844" loading="lazy" title="B5 · Receipt, English" scrolling="no"></iframe></a><a class="frame" href="B6.html?v=d2ecaeaf" target="_blank" style="left:5170px;top:0px;width:390px;height:844px"><span class="cap">B6 · Set a monthly top-up, English</span><iframe data-src="B6.html?v=d2ecaeaf" width="390" height="844" loading="lazy" title="B6 · Set a monthly top-up, English" scrolling="no"></iframe></a><a class="frame" href="B7.html?v=0f6a71c1" target="_blank" style="left:5640px;top:0px;width:390px;height:844px"><span class="cap">B7 · Monthly top-up on, English</span><iframe data-src="B7.html?v=0f6a71c1" width="390" height="844" loading="lazy" title="B7 · Monthly top-up on, English" scrolling="no"></iframe></a><a class="frame" href="B8.html?v=e3e05018" target="_blank" style="left:6110px;top:0px;width:390px;height:844px"><span class="cap">B8 · Apps, English</span><iframe data-src="B8.html?v=e3e05018" width="390" height="844" loading="lazy" title="B8 · Apps, English" scrolling="no"></iframe></a><a class="frame" href="B9.html?v=6f2b6f3d" target="_blank" style="left:6580px;top:0px;width:390px;height:844px"><span class="cap">B9 · An app asks, English</span><iframe data-src="B9.html?v=6f2b6f3d" width="390" height="844" loading="lazy" title="B9 · An app asks, English" scrolling="no"></iframe></a><a class="frame" href="B10.html?v=1dba8f81" target="_blank" style="left:7050px;top:0px;width:390px;height:844px"><span class="cap">B10 · Get it back, English</span><iframe data-src="B10.html?v=1dba8f81" width="390" height="844" loading="lazy" title="B10 · Get it back, English" scrolling="no"></iframe></a><a class="frame" href="B11.html?v=9df36287" target="_blank" style="left:7520px;top:0px;width:390px;height:844px"><span class="cap">B11 · Sent back, English</span><iframe data-src="B11.html?v=9df36287" width="390" height="844" loading="lazy" title="B11 · Sent back, English" scrolling="no"></iframe></a><a class="frame" href="B12.html?v=ae55bc3e" target="_blank" style="left:7990px;top:0px;width:390px;height:844px"><span class="cap">B12 · Accounts, English</span><iframe data-src="B12.html?v=ae55bc3e" width="390" height="844" loading="lazy" title="B12 · Accounts, English" scrolling="no"></iframe></a><a class="frame" href="B13Km.html?v=575e691f" target="_blank" style="left:0px;top:1004px;width:390px;height:851px"><span class="cap">B13 · Before you log in, Khmer</span><iframe data-src="B13Km.html?v=575e691f" width="390" height="851" loading="lazy" title="B13 · Before you log in, Khmer" scrolling="no"></iframe></a><a class="frame" href="B18Km.html?v=65382f90" target="_blank" style="left:470px;top:1004px;width:390px;height:851px"><span class="cap">B18 · Your age, Khmer</span><iframe data-src="B18Km.html?v=65382f90" width="390" height="851" loading="lazy" title="B18 · Your age, Khmer" scrolling="no"></iframe></a><a class="frame" href="B1Km.html?v=81356ca1" target="_blank" style="left:940px;top:1004px;width:390px;height:851px"><span class="cap">B1 · Balance, Khmer</span><iframe data-src="B1Km.html?v=81356ca1" width="390" height="851" loading="lazy" title="B1 · Balance, Khmer" scrolling="no"></iframe></a><a class="frame" href="B1ZKm.html?v=89d02a1d" target="_blank" style="left:1410px;top:1004px;width:390px;height:851px"><span class="cap">B1Z · Balance at zero, Khmer</span><iframe data-src="B1ZKm.html?v=89d02a1d" width="390" height="851" loading="lazy" title="B1Z · Balance at zero, Khmer" scrolling="no"></iframe></a><a class="frame" href="B2Km.html?v=b43aed6d" target="_blank" style="left:1880px;top:1004px;width:390px;height:851px"><span class="cap">B2 · Add money, Khmer</span><iframe data-src="B2Km.html?v=b43aed6d" width="390" height="851" loading="lazy" title="B2 · Add money, Khmer" scrolling="no"></iframe></a><a class="frame" href="B3Km.html?v=b2e35cbf" target="_blank" style="left:2350px;top:1004px;width:390px;height:851px"><span class="cap">B3 · Added, Khmer</span><iframe data-src="B3Km.html?v=b2e35cbf" width="390" height="851" loading="lazy" title="B3 · Added, Khmer" scrolling="no"></iframe></a><a class="frame" href="B3XKm.html?v=2f03a46f" target="_blank" style="left:2820px;top:1004px;width:390px;height:851px"><span class="cap">B3X · Declined, Khmer</span><iframe data-src="B3XKm.html?v=2f03a46f" width="390" height="851" loading="lazy" title="B3X · Declined, Khmer" scrolling="no"></iframe></a><a class="frame" href="B14Km.html?v=ee6dad55" target="_blank" style="left:3290px;top:1004px;width:390px;height:851px"><span class="cap">B14 · Pay with KHQR, Khmer</span><iframe data-src="B14Km.html?v=ee6dad55" width="390" height="851" loading="lazy" title="B14 · Pay with KHQR, Khmer" scrolling="no"></iframe></a><a class="frame" href="B15Km.html?v=0b75e273" target="_blank" style="left:3760px;top:1004px;width:390px;height:851px"><span class="cap">B15 · KHQR, waiting, Khmer</span><iframe data-src="B15Km.html?v=0b75e273" width="390" height="851" loading="lazy" title="B15 · KHQR, waiting, Khmer" scrolling="no"></iframe></a><a class="frame" href="B4Km.html?v=3186f8c5" target="_blank" style="left:4230px;top:1004px;width:390px;height:851px"><span class="cap">B4 · History, Khmer</span><iframe data-src="B4Km.html?v=3186f8c5" width="390" height="851" loading="lazy" title="B4 · History, Khmer" scrolling="no"></iframe></a><a class="frame" href="B5Km.html?v=db06c40d" target="_blank" style="left:4700px;top:1004px;width:390px;height:851px"><span class="cap">B5 · Receipt, Khmer</span><iframe data-src="B5Km.html?v=db06c40d" width="390" height="851" loading="lazy" title="B5 · Receipt, Khmer" scrolling="no"></iframe></a><a class="frame" href="B6Km.html?v=8f284b8f" target="_blank" style="left:5170px;top:1004px;width:390px;height:851px"><span class="cap">B6 · Set a monthly top-up, Khmer</span><iframe data-src="B6Km.html?v=8f284b8f" width="390" height="851" loading="lazy" title="B6 · Set a monthly top-up, Khmer" scrolling="no"></iframe></a><a class="frame" href="B7Km.html?v=b283110d" target="_blank" style="left:5640px;top:1004px;width:390px;height:851px"><span class="cap">B7 · Monthly top-up on, Khmer</span><iframe data-src="B7Km.html?v=b283110d" width="390" height="851" loading="lazy" title="B7 · Monthly top-up on, Khmer" scrolling="no"></iframe></a><a class="frame" href="B8Km.html?v=ba674e5b" target="_blank" style="left:6110px;top:1004px;width:390px;height:851px"><span class="cap">B8 · Apps, Khmer</span><iframe data-src="B8Km.html?v=ba674e5b" width="390" height="851" loading="lazy" title="B8 · Apps, Khmer" scrolling="no"></iframe></a><a class="frame" href="B9Km.html?v=69562fc7" target="_blank" style="left:6580px;top:1004px;width:390px;height:851px"><span class="cap">B9 · An app asks, Khmer</span><iframe data-src="B9Km.html?v=69562fc7" width="390" height="851" loading="lazy" title="B9 · An app asks, Khmer" scrolling="no"></iframe></a><a class="frame" href="B10Km.html?v=6f6f7f81" target="_blank" style="left:7050px;top:1004px;width:390px;height:851px"><span class="cap">B10 · Get it back, Khmer</span><iframe data-src="B10Km.html?v=6f6f7f81" width="390" height="851" loading="lazy" title="B10 · Get it back, Khmer" scrolling="no"></iframe></a><a class="frame" href="B11Km.html?v=039d76f8" target="_blank" style="left:7520px;top:1004px;width:390px;height:851px"><span class="cap">B11 · Sent back, Khmer</span><iframe data-src="B11Km.html?v=039d76f8" width="390" height="851" loading="lazy" title="B11 · Sent back, Khmer" scrolling="no"></iframe></a><a class="frame" href="B12Km.html?v=9fc11ea9" target="_blank" style="left:7990px;top:1004px;width:390px;height:851px"><span class="cap">B12 · Accounts, Khmer</span><iframe data-src="B12Km.html?v=9fc11ea9" width="390" height="851" loading="lazy" title="B12 · Accounts, Khmer" scrolling="no"></iframe></a><a class="frame" href="B1Dark.html?v=c655b93f" target="_blank" style="left:0px;top:2029px;width:390px;height:844px"><span class="cap">B1 · dark pass, English</span><iframe data-src="B1Dark.html?v=c655b93f" width="390" height="844" loading="lazy" title="B1 · dark pass, English" scrolling="no"></iframe></a></div><div class="page" data-page="family" hidden><a class="frame" href="B16.html?v=6e841809" target="_blank" style="left:0px;top:0px;width:390px;height:844px"><span class="cap">B16 · A teen asks a parent, English</span><iframe data-src="B16.html?v=6e841809" width="390" height="844" loading="lazy" title="B16 · A teen asks a parent, English" scrolling="no"></iframe></a><a class="frame" href="B17.html?v=5bf8c40a" target="_blank" style="left:470px;top:0px;width:390px;height:844px"><span class="cap">B17 · A parent&#x27;s page, English</span><iframe data-src="B17.html?v=5bf8c40a" width="390" height="844" loading="lazy" title="B17 · A parent&#x27;s page, English" scrolling="no"></iframe></a><a class="frame" href="B16Km.html?v=8ff9ed7f" target="_blank" style="left:0px;top:1004px;width:390px;height:851px"><span class="cap">B16 · A teen asks a parent, Khmer</span><iframe data-src="B16Km.html?v=8ff9ed7f" width="390" height="851" loading="lazy" title="B16 · A teen asks a parent, Khmer" scrolling="no"></iframe></a><a class="frame" href="B17Km.html?v=4521ec7e" target="_blank" style="left:470px;top:1004px;width:390px;height:851px"><span class="cap">B17 · A parent&#x27;s page, Khmer</span><iframe data-src="B17Km.html?v=4521ec7e" width="390" height="851" loading="lazy" title="B17 · A parent&#x27;s page, Khmer" scrolling="no"></iframe></a></div><div class="page" data-page="admin" hidden><a class="frame" href="A1.html?v=8f6e12af" target="_blank" style="left:0px;top:0px;width:390px;height:844px"><span class="cap">A1 · KHQR to check, English</span><iframe data-src="A1.html?v=8f6e12af" width="390" height="844" loading="lazy" title="A1 · KHQR to check, English" scrolling="no"></iframe></a><a class="frame" href="A1Km.html?v=b05486ef" target="_blank" style="left:0px;top:1004px;width:390px;height:865px"><span class="cap">A1 · KHQR to check, Khmer</span><iframe data-src="A1Km.html?v=b05486ef" width="390" height="865" loading="lazy" title="A1 · KHQR to check, Khmer" scrolling="no"></iframe></a></div><div class="page" data-page="apps" hidden><a class="frame" href="S1.html?v=6aa94ec5" target="_blank" style="left:0px;top:0px;width:390px;height:844px"><span class="cap">S1 · B-Origin: connect a balance, English</span><iframe data-src="S1.html?v=6aa94ec5" width="390" height="844" loading="lazy" title="S1 · B-Origin: connect a balance, English" scrolling="no"></iframe></a><a class="frame" href="S2.html?v=bc6cb774" target="_blank" style="left:470px;top:0px;width:390px;height:844px"><span class="cap">S2 · B-Twin: the price at the moment, English</span><iframe data-src="S2.html?v=bc6cb774" width="390" height="844" loading="lazy" title="S2 · B-Twin: the price at the moment, English" scrolling="no"></iframe></a><a class="frame" href="S3.html?v=426cd843" target="_blank" style="left:940px;top:0px;width:390px;height:844px"><span class="cap">S3 · B-Twin: in-app purchase, English</span><iframe data-src="S3.html?v=426cd843" width="390" height="844" loading="lazy" title="S3 · B-Twin: in-app purchase, English" scrolling="no"></iframe></a><a class="frame" href="S1Km.html?v=add565c0" target="_blank" style="left:0px;top:1004px;width:390px;height:851px"><span class="cap">S1 · B-Origin: connect a balance, Khmer</span><iframe data-src="S1Km.html?v=add565c0" width="390" height="851" loading="lazy" title="S1 · B-Origin: connect a balance, Khmer" scrolling="no"></iframe></a><a class="frame" href="S2Km.html?v=fedf6e27" target="_blank" style="left:470px;top:1004px;width:390px;height:851px"><span class="cap">S2 · B-Twin: the price at the moment, Khmer</span><iframe data-src="S2Km.html?v=fedf6e27" width="390" height="851" loading="lazy" title="S2 · B-Twin: the price at the moment, Khmer" scrolling="no"></iframe></a><a class="frame" href="S3Km.html?v=a0d1629f" target="_blank" style="left:940px;top:1004px;width:390px;height:851px"><span class="cap">S3 · B-Twin: in-app purchase, Khmer</span><iframe data-src="S3Km.html?v=a0d1629f" width="390" height="851" loading="lazy" title="S3 · B-Twin: in-app purchase, Khmer" scrolling="no"></iframe></a></div></div></div>
+<p class="hint">Drag to pan &#183; scroll or pinch to zoom &#183; tap a screen to open it</p>
+<script>
+(function(){
+  var stage=document.getElementById('stage'), world=document.getElementById('world');
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  var s=1, tx=0, ty=0, active=null;
+  function apply(){ world.style.transform='translate('+tx+'px,'+ty+'px) scale('+s+')'; }
+  function head(){ return document.querySelector('header').offsetHeight; }
+  function boxOf(page){
+    var els=[].slice.call(page.children), b={x1:1e9,y1:1e9,x2:-1e9,y2:-1e9};
+    els.forEach(function(el){
+      var x=parseFloat(el.style.left)||0, y=parseFloat(el.style.top)||0;
+      var w=parseFloat(el.style.width)||240, h=parseFloat(el.style.height)||el.offsetHeight||120;
+      b.x1=Math.min(b.x1,x); b.y1=Math.min(b.y1,y-30); b.x2=Math.max(b.x2,x+w); b.y2=Math.max(b.y2,y+h);
+    });
+    return b;
+  }
+  function fit(){
+    if(!active) return;
+    var b=boxOf(active), pad=48, top=head();
+    var vw=window.innerWidth-pad*2, vh=window.innerHeight-top-pad*2;
+    s=Math.min(vw/Math.max(1,b.x2-b.x1), vh/Math.max(1,b.y2-b.y1), 1);
+    tx=pad-b.x1*s + Math.max(0,(vw-(b.x2-b.x1)*s))/2;
+    ty=top+pad-b.y1*s;
+    apply();
+  }
+  function show(id){
+    [].slice.call(document.querySelectorAll('.page')).forEach(function(p){
+      var on=p.getAttribute('data-page')===id; p.hidden=!on; if(on) active=p;
+    });
+    tabs.forEach(function(t){ t.setAttribute('aria-pressed', String(t.getAttribute('data-page')===id)); });
+    // load this page's frames once it is shown
+    [].slice.call(active.querySelectorAll('iframe[data-src]')).forEach(function(f){
+      f.src=f.getAttribute('data-src'); f.removeAttribute('data-src');
+    });
+    fit();
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.getAttribute('data-page')); }); });
+  document.getElementById('fit').addEventListener('click', fit);
+  function zoomAt(f, cx, cy){
+    var ns=Math.min(3, Math.max(0.06, s*f));
+    tx=cx-(cx-tx)*(ns/s); ty=cy-(cy-ty)*(ns/s); s=ns; apply();
+  }
+  document.getElementById('in').addEventListener('click', function(){ zoomAt(1.25, innerWidth/2, innerHeight/2); });
+  document.getElementById('out').addEventListener('click', function(){ zoomAt(0.8, innerWidth/2, innerHeight/2); });
+  stage.addEventListener('wheel', function(e){
+    e.preventDefault();
+    if(e.ctrlKey||e.metaKey) zoomAt(Math.pow(0.995,e.deltaY), e.clientX, e.clientY);
+    else { tx-=e.deltaX; ty-=e.deltaY; apply(); }
+  }, {passive:false});
+  var pts={}, last=null, moved=false;
+  stage.addEventListener('pointerdown', function(e){
+    pts[e.pointerId]={x:e.clientX,y:e.clientY}; moved=false;
+    stage.setPointerCapture(e.pointerId); stage.classList.add('drag');
+  });
+  stage.addEventListener('pointermove', function(e){
+    if(!pts[e.pointerId]) return;
+    var ids=Object.keys(pts);
+    var prev=pts[e.pointerId]; pts[e.pointerId]={x:e.clientX,y:e.clientY};
+    if(ids.length===1){
+      tx+=e.clientX-prev.x; ty+=e.clientY-prev.y;
+      if(Math.abs(e.clientX-prev.x)+Math.abs(e.clientY-prev.y)>2) moved=true;
+      apply();
+    } else if(ids.length===2){
+      var a=pts[ids[0]], b=pts[ids[1]];
+      var dist=Math.hypot(a.x-b.x,a.y-b.y);
+      if(last) zoomAt(dist/last, (a.x+b.x)/2, (a.y+b.y)/2);
+      last=dist; moved=true;
+    }
+  });
+  function up(e){ delete pts[e.pointerId]; if(!Object.keys(pts).length){ last=null; stage.classList.remove('drag'); } }
+  stage.addEventListener('pointerup', up); stage.addEventListener('pointercancel', up);
+  // a pan must not count as a tap on a frame
+  stage.addEventListener('click', function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
+  window.addEventListener('resize', fit);
+  show(tabs[0].getAttribute('data-page'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+/* ============================================================================
+   THE SHARED TOKEN LAYER — canonical
+   ----------------------------------------------------------------------------
+   This file is the extraction A57 called for. It was reconciled from three
+   copies that had drifted: sayyourname/web/partials/tokens.css (303 lines),
+   playsey's (312) and seysays' (237, an older generation). Where they
+   disagreed, the newer statement won and the reason is recorded at the site of
+   the merge. Nothing here was re-derived.
+
+   WHY THESE NAMES. --bg / --surface / --line / --ink / --ink-dim / --accent /
+   --accent-soft are seysays' existing role names, already threaded through
+   ~1,500 lines of hand-written CSS including the 1,080-line literal inside
+   <sey-app>. Keeping them is what turned that restyle from a rewrite into a
+   value swap. Every type, measure, leading, radius and control-height value
+   below is lifted verbatim from seysays/web/partials/site.css, which is the
+   best-tuned CSS in the tree.
+
+   WHAT GOES WHERE. Theme-INVARIANT things go in @theme, which Tailwind 4 emits
+   into :root at compile time and turns into utilities. Theme-VARYING things
+   cannot: @theme has no way to express a media query or a class scope. So they
+   are plain CSS below, re-exposed to Tailwind through `@theme inline`, which
+   references the variable rather than copying its value.
+
+   WHAT THIS FILE DOES NOT DO. It declares the palette pairs but never MAPS
+   them to a theme — that is theme-3block.css or theme-2state.css, and a
+   consumer picks exactly one. Motion is motion.css. This split exists because
+   two of the four sites have documented, deliberate reasons to resolve themes
+   and reduced-motion differently, and normalising them would silently restyle
+   shipped code. See README.md.
+
+   ORDER OF CONCATENATION, and it is not arbitrary:
+       tokens.css -> theme-*.css -> motion.css -> [metta.css]
+       -> [reduce-global.css] -> brand.css (per site) -> site.css (per site)
+   (bracketed files are OPT-IN; a surface with no session skips metta.css)
+   Custom-property substitution is lazy, so a value declared here may reference
+   one that a later file sets — which is exactly how --accent, set per site,
+   reaches the derived family below.
+
+   ⚠️ NEVER @import A SIBLING OF THIS FILE. The consuming sites inject their
+   partials as RAW TEXT and concatenate them; a relative @import resolves
+   against src/, where partials/ is unreachable, and ships a dead
+   render-blocking at-rule. The `@import "tailwindcss"` immediately below is a
+   different thing and is fine: it is a bare specifier the Tailwind plugin
+   resolves, and it is verified to reach dist.
+   ========================================================================== */
+
+@import "tailwindcss";
+
+/* Lit shadow roots need :host(.dark); light DOM needs the descendant form. */
+@custom-variant dark (:host(.dark) &, &:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------- Tier A ---
+   Theme-invariant. Fonts, scale, geometry, motion timing, and two of the three
+   palettes — the gems and the aura ramp. The six-TLD rainbow is NOT here; it has
+   no pinned values, and data/tlds.json records why. */
+@theme {
+    /* Set per site in brand.css; these are the fallbacks a bare page gets. */
+    --font-display: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-text: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-khmer: "Noto Sans Khmer", sans-serif;
+
+    /* The scale, verbatim from seysays.
+
+       ⚠️ IT ASSUMES A NORMAL-WIDTH FACE. A site that picks an expanded display
+       face must override the hero rung in its own brand.css — the token is
+       shared, the FACE is that site's choice, and the site that chose the face
+       owns the consequence. playsey does exactly this for Archivo Expanded. */
+    --text-hero: clamp(2.5rem, 11vw, 4rem);
+    --text-title: clamp(1.35rem, 5.5vw, 1.75rem);
+    --text-lede: clamp(1.1rem, 4.5vw, 1.3rem);
+    --text-sub: 1.05rem;
+    --text-body: 1rem;
+    --text-small: 0.92rem;
+    --text-micro: 0.85rem;
+
+    --track-hero: -0.035em;
+    --track-title: -0.02em;
+    --track-spelt: 0.06em;
+
+    --leading-hero: 1.02;
+    --leading-title: 1.2;
+    --leading-body: 1.65;
+    --leading-khmer: 1.5;
+
+    --measure-prose: 36rem;
+    --measure-column: 42rem;
+
+    --r-control: 1rem;
+    --r-card: 1.25rem;
+    --r-input: 1rem;
+    --r-pill: 999px;
+
+    --control-h: 3.5rem;
+    --control-h-sm: 2.25rem;
+
+    /* ~40 BPM, lub-dub-rest. The RHYTHM is the signature, not the rate: a
+       72 BPM variant was built and rejected. Do not "correct" this.
+
+       THE CARDIAC REST IS IN THE KEYFRAMES, NOT IN THE DELAY, and the two are
+       easy to confuse because both produce stillness. motion.css rests from
+       70% to 100% of the period — 450ms of every 1500ms, on every cycle,
+       forever. That is the diastolic pause and it is what makes the mark read
+       as a heart rather than a throb.
+
+       --beat-delay is a CSS animation-delay, which per spec fires ONCE, before
+       the first iteration, and is never inserted between iterations. It was
+       1.5s, which bought nothing recurring and cost the thing the mark is for:
+       a Proof-of-Humanity signal that holds still for a beat and a half after
+       paint is claiming nothing during the window a visitor is most likely to
+       be looking. Now 0s — the mark beats on paint, and the rhythm above is
+       bit-for-bit unchanged.
+
+       THE TOKEN STAYS, because it has a real use that is not a global pause:
+       per-instance STAGGER. Where several marks share a screen, giving each a
+       small distinct delay stops them beating in lockstep — a synchronized
+       chorus reads as one animation driving everything rather than several
+       independent signals. Set it per instance; leave the default at 0. */
+    --beat-duration: 1.5s;
+    --beat-delay: 0s;
+    --dur-fast: 0.12s;
+    --dur-base: 0.15s;
+
+    /* The B-Gem media-type palette. A colour here MEANS a medium: ruby is
+       video, fire opal is voice. Using one as a site accent is only correct
+       where the gem IS that product's medium.
+       PINK IS ABSENT BY CONSTRUCTION - it is reserved for B-Dating. */
+    --color-ruby: #c8102e;
+    --color-fire-opal: #e85d04;
+    --color-citrine: #f0b429;
+    --color-emerald: #00a36c;
+    --color-sapphire: #0f52ba;
+    --color-amethyst: #9966cc;
+    --color-diamond: #f4f7ff;
+
+    /* seysays' violet. A SITE value, deliberately NOT an eighth gem - the
+       commons' medium is not one of the seven. Amethyst is the gem for
+       letters, and borrowing a media-type colour as a site accent overloads a
+       channel the doctrine reserves. The measured reason agrees: those pages
+       are read at arm's length outdoors, and the more saturated violet is what
+       survives sunlight. */
+    --color-violet-sey: #7c3aed;
+
+    /* ------------------------------------------------------------------
+       THE AURA RAMP. A THIRD PALETTE, and the one with a live consumer.
+
+       A colour here means a POSITION — how fast a person's gratitude is
+       circulating (crossings per month, bucketed server-side by colorFor() in
+       thank.heartbank.org/functions/src/auras/compute.ts). It is not a medium
+       and it is not a domain. Seven stops, ROYGBIV, and the seventh is VIOLET
+       rather than diamond: the gem palette's seven and this one's seven are
+       different sets that happen to share a count.
+
+       ⚠️ THREE PALETTES, SEVEN·SEVEN·SIX, AND THEY MUST NOT BE FUSED. Gems
+       mean a MEDIUM (a colour that says "this is a voice note"). The six-TLD
+       rainbow means a DOMAIN (see data/tlds.json — names only, no values are
+       pinned anywhere yet). This one means a RATE. The hues rhyme because
+       there are only so many places on a colour wheel; the meanings do not.
+
+       ⚠️ EXTRACTED, NOT INVENTED. These seven were typed by hand in three
+       files of the shipping Phase-1 app — aura-avatar/index.ts:12,
+       chart/index.ts:20, graph/index.ts:38 — and all three still agreed when
+       they were lifted. That agreement is why this is a straight extraction
+       and not a re-derivation: nothing here was chosen, only moved.
+
+       ⚠️ TWO OF THESE HEXES COLLIDE WITH TOKENS ABOVE, and the collision is
+       coincidence rather than kinship: --color-aura-red is byte-identical to
+       --danger, and --color-aura-violet to --color-violet-sey. Three names,
+       two values, three unrelated meanings. Do NOT collapse them into
+       aliases — the day one of them is re-tuned, the other two must not move
+       with it, and a var() chain is exactly what would drag them along. */
+    --color-aura-red: #dc2626;
+    --color-aura-orange: #ea580c;
+    --color-aura-yellow: #ca8a04;
+    --color-aura-green: #16a34a;
+    --color-aura-blue: #2563eb;
+    --color-aura-indigo: #4f46e5;
+    --color-aura-violet: #7c3aed;
+
+    --animate-heartbeat: heartbeat var(--beat-duration) var(--beat-delay)
+        infinite;
+}
+
+/* ---------------------------------------------------------------- Tier B ---
+   Theme-varying. Palettes are declared once as -d-/-l- pairs; the mapping file
+   loaded after this one only REFERENCES them, so a value is never typed twice.
+
+   Per-site overrides live in brand.css and are loaded after both.             */
+:root {
+    /* dark palette */
+    --d-bg: #0a0a0f;
+    --d-bg-tint: #191426;
+    --d-surface: #17171d;
+    --d-surface-2: #1f1f27;
+    --d-line: rgba(255, 255, 255, 0.08);
+    --d-line-strong: rgba(255, 255, 255, 0.18);
+    --d-ink: #f5f5f7;
+    --d-ink-dim: #9b9ba5;
+    --d-ink-faint: #6b6b76;
+    --d-scrim: rgba(6, 6, 10, 0.72);
+    --d-soft-mix: 55%; /* accent lifted TOWARD WHITE on a dark ground */
+    --d-soft-with: #ffffff;
+
+    /* light palette */
+    --l-bg: #fcfbfe;
+    --l-bg-tint: #f4f1fb;
+    --l-surface: #f4f1fb;
+    --l-surface-2: #ebe7f5;
+    --l-line: rgba(20, 16, 30, 0.12);
+    --l-line-strong: rgba(20, 16, 30, 0.28);
+    --l-ink: #16141c;
+    --l-ink-dim: #5b5766;
+    --l-ink-faint: #8b8796;
+    --l-scrim: rgba(20, 16, 30, 0.4);
+    --l-soft-mix: 78%; /* accent darkened toward black on a light ground */
+    --l-soft-with: #000000;
+}
+
+/* The one semantic colour that is not the accent. It arrived from seysays,
+   which is still its only consumer — it is here rather than in a site layer so
+   that the second site to need a destructive state inherits one red instead of
+   inventing a second. Theme-invariant on purpose: a warning that changes
+   colour with the paper is a warning that has to be re-tested twice. */
+:root {
+    --danger: #dc2626;
+}
+
+/* The accent family DERIVES. These were eleven hard-coded rgba literals of one
+   violet, every one of which broke the instant the accent or the theme
+   changed. color-mix() is safe to depend on here: Tailwind 4's own browser
+   floor is already above it.
+
+   ⚠️ TWO VALUES IN THIS FAMILY CANNOT DERIVE and are declared per site:
+   --accent-ink and, on a light ground, --accent-soft. Fire Opal on white is
+   3.4:1 and fails while Sapphire on white is 7.0:1 and passes, so one site
+   takes near-black ink on its fill and another takes white, and no formula
+   picks correctly. That is the honest limit of "a fifth site is five
+   declarations" — it is nine. Do not build a "pass a gem, get a theme" API on
+   top of this; the true shape is a gem plus two measured overrides. */
+:root {
+    --accent-soft: color-mix(
+        in oklab,
+        var(--accent) var(--soft-mix),
+        var(--soft-with)
+    );
+    --accent-wash: color-mix(in oklab, var(--accent-soft) 10%, transparent);
+    --accent-edge: color-mix(in oklab, var(--accent-soft) 25%, transparent);
+    --accent-edge-strong: color-mix(
+        in oklab,
+        var(--accent-soft) 45%,
+        transparent
+    );
+    --accent-halo: color-mix(in oklab, var(--accent) 16%, transparent);
+    --accent-glow: color-mix(in oklab, var(--accent) 85%, transparent);
+    --accent-bar: color-mix(in oklab, var(--accent) 45%, transparent);
+
+    --danger-soft: color-mix(in oklab, var(--danger) 80%, white);
+    --danger-edge: color-mix(in oklab, var(--danger) 45%, transparent);
+
+    /* The B-Emblem's ink. Derived, never picked — the mark takes the site
+       accent, so whatever governs that governs the emblem too and there is no
+       second colour to keep in step. */
+    --emblem: var(--accent);
+}
+
+/* Re-expose the theme-varying roles to Tailwind. `inline` means "reference the
+   variable", not "copy its value" - which is the whole point, since the value
+   changes per theme. */
+@theme inline {
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-surface-2: var(--surface-2);
+    --color-line: var(--line);
+    --color-ink: var(--ink);
+    --color-ink-dim: var(--ink-dim);
+    --color-accent: var(--accent);
+    --color-accent-soft: var(--accent-soft);
+}
