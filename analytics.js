@@ -36,6 +36,19 @@
     } catch (e) {
         deviceId = "anon";
     }
+    // The founder's own browsers send `admin: true`, so his visits never ring his phone (founder 2026-11-10; /build Default 9;
+    // thonly.org project_admin_push_channel). On 333.eco and its subdomains, login.333.eco's `ma-admin` cookie says so; on any
+    // other domain, one visit to <page>#ma-admin marks this browser for this site. One bit, no identity: forging it only
+    // silences the forger's own visits.
+    var admin = /(?:^|;\s*)ma-admin=1(?:;|$)/.test(document.cookie);
+    try {
+        if (location.hash === "#ma-admin") {
+            localStorage.setItem("ma-admin", "1");
+            history.replaceState(history.state, "", location.pathname + location.search);
+        }
+        if (localStorage.getItem("ma-admin") === "1") admin = true;
+    } catch (e) {}
+
     function post(event, data) {
         try {
             fetch(ENDPOINT, {
@@ -49,7 +62,8 @@
                     // A369: true under automation (navigator.webdriver — /safari's
                     // simulator, a headless crawler). /api/track stores it, the
                     // admin push skips the row and /estate classes it machine.
-                    wd: navigator.webdriver === true
+                    wd: navigator.webdriver === true,
+                    admin: admin
                 }),
                 keepalive: true
             }).catch(function () {});
